@@ -6,11 +6,12 @@ import markdown
 import yaml
 import re
 from datetime import datetime
-    
+import create_artwork
+
 navigation_bar = (
     f"<nav>\n"
     f"\t<ul>\n"
-    f"\t\t<li><span class=\"site-name\">blake's consumed media</span></li>\n"
+    f"\t\t<li><span class=\"site-name\">blake's cybernetic canopy</span></li>\n"
     f"\t\t<li><a href=\"index.html\" class=\"nav-home\">home</a></li>\n"
     f"\t\t<li><a href=\"html/projects.html\" class=\"nav-projects\">projects</a></li>\n"
     f"\t\t<li><a href=\"html/bookshelf.html\" class=\"nav-bookshelf\">bookshelf</a></li>\n"
@@ -40,6 +41,7 @@ def main():
     website_base_dir = "../blakelawyer.dev"
 
     create_site_directory(website_base_dir)
+    create_artwork.pixelate()
     generate_index()
     generate_projects()
     generate_bookshelf(website_base_dir)
@@ -79,7 +81,8 @@ def generate_index():
 def generate_projects():
     
     project_head = head.replace("styles.css", "../styles.css")
-    project_navigation_bar = navigation_bar.replace("index.html", "../index.html")
+    project_navigation_bar = navigation_bar.replace("blake's cybernetic canopy", "blake's projects")
+    project_navigation_bar = project_navigation_bar.replace("index.html", "../index.html")
     project_navigation_bar = project_navigation_bar.replace("html/projects.html", "projects.html")
     project_navigation_bar = project_navigation_bar.replace("html/bookshelf.html", "bookshelf.html")
     project_navigation_bar = project_navigation_bar.replace("html/media.html", "media.html")
@@ -101,7 +104,8 @@ def generate_projects():
 def generate_media(website_base_dir):
 
     media_head = head.replace("styles.css", "../styles.css")
-    media_navigation_bar = navigation_bar.replace("index.html", "../index.html")
+    media_navigation_bar = navigation_bar.replace("blake's cybernetic canopy", "blake's consumption")
+    media_navigation_bar = media_navigation_bar.replace("index.html", "../index.html")
     media_navigation_bar = media_navigation_bar.replace("html/projects.html", "projects.html")
     media_navigation_bar = media_navigation_bar.replace("html/bookshelf.html", "bookshelf.html")
     media_navigation_bar = media_navigation_bar.replace("html/media.html", "media.html")
@@ -112,6 +116,7 @@ def generate_media(website_base_dir):
     media_items = []
     for file in files:
         metadata, _ = parse_markdown_with_metadata(f"{website_base_dir}/docs/media/{file}")
+        metadata['file'] = file.split(".")[0] + ".jpg"
         media_items.append(metadata)
 
     media_items = sorted(
@@ -125,12 +130,15 @@ def generate_media(website_base_dir):
     for item in media_items:
         media_html = (
             f"\t\t\t\t<li>"
+            f"<img src=\"../images/pixelated_posters/{item['file']}\">"
+            f"<div class=\"text-container\">"
             f"<span class=\"title\">{item['title']}</span> "
-            f"<span class=\"punctuation\">-</span> "
+            # f"<span class=\"punctuation\">-</span> "
             f"<span class=\"author\">{item['director']}</span> "
-            f"<span class=\"punctuation\">(</span>"
+            # f"<span class=\"punctuation\">(</span>"
             f"<span class=\"year\">{item['year']}</span>"
-            f"<span class=\"punctuation\">)</span>"
+            # f"<span class=\"punctuation\">)</span>"
+            f"</div>"
             f"</li>\n"
         )
         new_content += media_html
@@ -160,7 +168,8 @@ def generate_media(website_base_dir):
 def generate_bookshelf(website_base_dir):
     
     bookshelf_head = head.replace("styles.css", "../styles.css")
-    bookshelf_navigation_bar = navigation_bar.replace("index.html", "../index.html")
+    bookshelf_navigation_bar = navigation_bar.replace("blake's cybernetic canopy", "blake's bookshelf")
+    bookshelf_navigation_bar = bookshelf_navigation_bar.replace("index.html", "../index.html")
     bookshelf_navigation_bar = bookshelf_navigation_bar.replace("html/projects.html", "projects.html")
     bookshelf_navigation_bar = bookshelf_navigation_bar.replace("html/bookshelf.html", "bookshelf.html")
     bookshelf_navigation_bar = bookshelf_navigation_bar.replace("html/media.html", "media.html")
@@ -171,6 +180,7 @@ def generate_bookshelf(website_base_dir):
     books = []
     for file in files:
         metadata, _ = parse_markdown_with_metadata(f"{website_base_dir}/docs/bookshelf/{file}")
+        metadata['file'] = file.split(".")[0] + ".jpg"
         books.append(metadata)
 
     currently_reading = []
@@ -192,12 +202,15 @@ def generate_bookshelf(website_base_dir):
     for book in currently_reading:
         book_html = (
             f"\t\t\t\t<li>"
+            f"<img src=\"../images/pixelated_covers/{book['file']}\">"
+            f"<div class=\"text-container\">"
             f"<span class=\"title\">{book['title']}</span> "
-            f"<span class=\"punctuation\">-</span> "
+            # f"<span class=\"punctuation\">-</span> "
             f"<span class=\"author\">{book['author']}</span> "
-            f"<span class=\"punctuation\">(</span>"
+            # f"<span class=\"punctuation\">(</span>"
             f"<span class=\"year\">{book['year']}</span>"
-            f"<span class=\"punctuation\">)</span>"
+            # f"<span class=\"punctuation\">)</span>"
+            f"</div>"
             f"</li>\n"
         ) 
         currently_reading_content += book_html
@@ -208,12 +221,15 @@ def generate_bookshelf(website_base_dir):
     for book in completed_books:
         book_html = (
             f"\t\t\t\t<li>"
+            f"<img src=\"../images/pixelated_covers/{book['file']}\">"
+            f"<div class=\"text-container\">"
             f"<span class=\"title\">{book['title']}</span> "
-            f"<span class=\"punctuation\">-</span> "
+            # f"<span class=\"punctuation\">-</span> "
             f"<span class=\"author\">{book['author']}</span> "
-            f"<span class=\"punctuation\">(</span>"
+            # f"<span class=\"punctuation\">(</span>"
             f"<span class=\"year\">{book['year']}</span>"
-            f"<span class=\"punctuation\">)</span>"
+            # f"<span class=\"punctuation\">)</span>"
+            f"</div>"
             f"</li>\n"
         )
         completed_books_content += book_html
@@ -286,6 +302,10 @@ def create_site_directory(website_base_dir):
     shutil.copy2(f"{website_base_dir}/html/projects.html", "site/html/projects.html")
     shutil.copy2(f"{website_base_dir}/html/bookshelf.html", "site/html/bookshelf.html")
     shutil.copy2(f"{website_base_dir}/html/media.html", "site/html/media.html")
+    shutil.copytree(f"{website_base_dir}/images", "site/images")
+    
+    os.makedirs("site/images/pixelated_covers")
+    os.makedirs("site/images/pixelated_posters")
 
 
 if __name__ =="__main__":
