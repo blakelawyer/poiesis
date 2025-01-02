@@ -119,36 +119,64 @@ def generate_media(website_base_dir):
         metadata['file'] = file.split(".")[0] + ".jpg"
         media_items.append(metadata)
 
-    media_items = sorted(
-        media_items,
+    currently_watching = []
+    completed_media = []
+    for item in media_items:
+        if item['completed']:
+            completed_media.append(item)
+        else:
+            currently_watching.append(item)
+
+    completed_media = sorted(
+        completed_media,
         key=lambda x: x['date'],
         reverse=True
     )
 
-    new_content = ""
-    new_content += "\t\t\t<ul>\n"
-    for item in media_items:
+    currently_watching_content = ""
+    currently_watching_content += "\t\t\t<ul>\n"
+    for item in currently_watching:
         media_html = (
             f"\t\t\t\t<li>"
             f"<img src=\"../images/pixelated_posters/{item['file']}\">"
             f"<div class=\"text-container\">"
             f"<span class=\"title\">{item['title']}</span> "
-            # f"<span class=\"punctuation\">-</span> "
             f"<span class=\"author\">{item['director']}</span> "
-            # f"<span class=\"punctuation\">(</span>"
             f"<span class=\"year\">{item['year']}</span>"
-            # f"<span class=\"punctuation\">)</span>"
             f"</div>"
             f"</li>\n"
         )
-        new_content += media_html
-    new_content += "\t\t\t</ul>\n"
+        currently_watching_content += media_html
+    currently_watching_content += "\t\t\t</ul>\n"
+
+    completed_media_content = ""
+    completed_media_content += "\t\t\t<ul>\n"
+    for item in completed_media:
+        media_html = (
+            f"\t\t\t\t<li>"
+            f"<img src=\"../images/pixelated_posters/{item['file']}\">"
+            f"<div class=\"text-container\">"
+            f"<span class=\"title\">{item['title']}</span> "
+            f"<span class=\"author\">{item['director']}</span> "
+            f"<span class=\"year\">{item['year']}</span>"
+            f"</div>"
+            f"</li>\n"
+        )
+        completed_media_content += media_html
+    completed_media_content += "\t\t\t</ul>\n"
+
+    update_html(
+        "site/html/media.html",
+        "<!-- currently_watching_start -->",
+        "<!-- currently_watching_end -->",
+        currently_watching_content,
+    )
 
     update_html(
         "site/html/media.html",
         "<!-- 2024_consumed_start -->",
         "<!-- 2024_consumed_end -->",
-        new_content,
+        completed_media_content,
     )
     
     update_html(
@@ -205,11 +233,8 @@ def generate_bookshelf(website_base_dir):
             f"<img src=\"../images/pixelated_covers/{book['file']}\">"
             f"<div class=\"text-container\">"
             f"<span class=\"title\">{book['title']}</span> "
-            # f"<span class=\"punctuation\">-</span> "
             f"<span class=\"author\">{book['author']}</span> "
-            # f"<span class=\"punctuation\">(</span>"
             f"<span class=\"year\">{book['year']}</span>"
-            # f"<span class=\"punctuation\">)</span>"
             f"</div>"
             f"</li>\n"
         ) 
@@ -224,11 +249,8 @@ def generate_bookshelf(website_base_dir):
             f"<img src=\"../images/pixelated_covers/{book['file']}\">"
             f"<div class=\"text-container\">"
             f"<span class=\"title\">{book['title']}</span> "
-            # f"<span class=\"punctuation\">-</span> "
             f"<span class=\"author\">{book['author']}</span> "
-            # f"<span class=\"punctuation\">(</span>"
             f"<span class=\"year\">{book['year']}</span>"
-            # f"<span class=\"punctuation\">)</span>"
             f"</div>"
             f"</li>\n"
         )
