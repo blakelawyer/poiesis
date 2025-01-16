@@ -149,9 +149,12 @@ def generate_media(website_base_dir):
         currently_watching_content += media_html
     currently_watching_content += "\t\t\t</ul>\n"
 
-    completed_media_content = ""
-    completed_media_content += "\t\t\t<ul>\n"
+    completed_media_content_2024 = ""
+    completed_media_content_2025 = ""
+    completed_media_content_2024 += "\t\t\t<ul>\n"
+    completed_media_content_2025 += "\t\t\t<ul>\n"
     for item in completed_media:
+        year = item['date'].year
         media_html = (
             f"\t\t\t\t<li>"
             f"<img src=\"../images/pixelated_posters/{item['file']}\">"
@@ -162,8 +165,13 @@ def generate_media(website_base_dir):
             f"</div>"
             f"</li>\n"
         )
-        completed_media_content += media_html
-    completed_media_content += "\t\t\t</ul>\n"
+        if year == 2024:
+            completed_media_content_2024 += media_html
+        else:
+            completed_media_content_2025 += media_html
+
+    completed_media_content_2024 += "\t\t\t</ul>\n"
+    completed_media_content_2025 += "\t\t\t</ul>\n"
 
     update_html(
         "site/html/media.html",
@@ -176,7 +184,14 @@ def generate_media(website_base_dir):
         "site/html/media.html",
         "<!-- 2024_consumed_start -->",
         "<!-- 2024_consumed_end -->",
-        completed_media_content,
+        completed_media_content_2024,
+    )
+
+    update_html(
+        "site/html/media.html",
+        "<!-- 2025_consumed_start -->",
+        "<!-- 2025_consumed_end -->",
+        completed_media_content_2025,
     )
     
     update_html(
@@ -241,9 +256,14 @@ def generate_bookshelf(website_base_dir):
         currently_reading_content += book_html
     currently_reading_content += "\t\t\t</ul>\n"
 
-    completed_books_content = ""
-    completed_books_content += "\t\t\t<ul>\n"
+    completed_books_content_2024 = ""
+    completed_books_content_2025 = ""
+    completed_books_content_2024 += "\t\t\t<ul>\n"
+    completed_books_content_2025 += "\t\t\t<ul>\n"
+
     for book in completed_books:
+        year = book['date'].year
+
         book_html = (
             f"\t\t\t\t<li>"
             f"<img src=\"../images/pixelated_covers/{book['file']}\">"
@@ -254,8 +274,13 @@ def generate_bookshelf(website_base_dir):
             f"</div>"
             f"</li>\n"
         )
-        completed_books_content += book_html
-    completed_books_content += "\t\t\t</ul>\n"
+        if year == 2024:
+            completed_books_content_2024 += book_html
+        else:
+            completed_books_content_2025 += book_html
+
+    completed_books_content_2024 += "\t\t\t</ul>\n"
+    completed_books_content_2025 += "\t\t\t</ul>\n"
     
     update_html(
         "site/html/bookshelf.html",
@@ -268,7 +293,14 @@ def generate_bookshelf(website_base_dir):
         "site/html/bookshelf.html",
         "<!-- 2024_books_start -->",
         "<!-- 2024_books_end -->",
-        completed_books_content,
+        completed_books_content_2024,
+    )
+
+    update_html(
+        "site/html/bookshelf.html",
+        "<!-- 2025_books_start -->",
+        "<!-- 2025_books_end -->",
+        completed_books_content_2025,
     )
 
     update_html(
