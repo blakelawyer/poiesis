@@ -26,9 +26,12 @@ navigation_bar = (
     f"</nav>\n"
 )
 
+# Perhaps there is a way to get this to work.
+# f"\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+
 head = (
     f"\t<meta charset=\"UTF-8\">\n"
-    f"\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+    f"\t<meta name=\"viewport\" content=\"width=980\">\n"
     f"\t<meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n"
     f"\t<title>Blake's Cybernetic Canopy</title>\n"
     f"\t<link href=\"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap\" rel=\"stylesheet\">\n"
