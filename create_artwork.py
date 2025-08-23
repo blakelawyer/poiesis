@@ -5,7 +5,7 @@ import numpy as np
 def pixelate():
 
     width, height = 16, 24
-    directories = ["covers", "posters", "podcasts"]
+    directories = ["covers", "posters"]
     scale_factor = 3
     debug = False
 

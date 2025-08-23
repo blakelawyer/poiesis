@@ -363,7 +363,6 @@ def create_site_directory(website_base_dir):
     
     os.makedirs("site/images/pixelated_covers")
     os.makedirs("site/images/pixelated_posters")
-    os.makedirs("site/images/pixelated_podcasts")
 
 
 if __name__ =="__main__":
