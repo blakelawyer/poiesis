@@ -26,9 +26,6 @@ navigation_bar = (
     f"</nav>\n"
 )
 
-# Perhaps there is a way to get this to work.
-# f"\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
-
 head = (
     f"\t<meta charset=\"UTF-8\">\n"
     f"\t<meta name=\"viewport\" content=\"width=980\">\n"
@@ -46,7 +43,7 @@ def main():
     create_site_directory(website_base_dir)
     create_artwork.pixelate()
     generate_index()
-    generate_projects()
+    generate_projects(website_base_dir)
     generate_bookshelf(website_base_dir)
     generate_media(website_base_dir)
 
@@ -81,22 +78,60 @@ def generate_index():
         head,
     )
     
-def generate_projects():
-    
+def generate_projects(website_base_dir):
+
     project_head = head.replace("styles.css", "../styles.css")
     project_navigation_bar = navigation_bar.replace("blake's cybernetic canopy", "blake's projects")
     project_navigation_bar = project_navigation_bar.replace("index.html", "../index.html")
     project_navigation_bar = project_navigation_bar.replace("html/projects.html", "projects.html")
     project_navigation_bar = project_navigation_bar.replace("html/bookshelf.html", "bookshelf.html")
     project_navigation_bar = project_navigation_bar.replace("html/media.html", "media.html")
-    
+
+    files = os.listdir("../blakelawyer.dev/docs/projects")
+    files.remove("template.md")
+
+    projects = []
+    for file in files:
+        metadata, _ = parse_markdown_with_metadata(f"{website_base_dir}/docs/projects/{file}")
+        metadata['file'] = file.split(".")[0] + ".png"
+        projects.append(metadata)
+
+    # Sort by date, most recent first
+    projects = sorted(
+        projects,
+        key=lambda x: x['date'],
+        reverse=True
+    )
+
+    projects_content = ""
+    projects_content += "\t\t\t<ul>\n"
+    for project in projects:
+        project_html = (
+            f"\t\t\t\t<li>"
+            f"<img src=\"../images/project_art/{project['file']}\">"
+            f"<div class=\"text-container\">"
+            f"<span class=\"title\">{project['title']}</span> "
+            f"<span class=\"author\">{project['description']}</span>"
+            f"</div>"
+            f"</li>\n"
+        )
+        projects_content += project_html
+    projects_content += "\t\t\t</ul>\n"
+
+    update_html(
+        "site/html/projects.html",
+        "<!-- projects_start -->",
+        "<!-- projects_end -->",
+        projects_content,
+    )
+
     update_html(
         "site/html/projects.html",
         "<!-- navigation_bar_start -->",
         "<!-- navigation_bar_end -->",
         project_navigation_bar,
     )
-    
+
     update_html(
         "site/html/projects.html",
         "<!-- head_start -->",
