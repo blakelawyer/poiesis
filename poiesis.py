@@ -111,7 +111,8 @@ def generate_projects(website_base_dir):
             f"<img src=\"../images/project_art/{project['file']}\">"
             f"<div class=\"text-container\">"
             f"<span class=\"title\">{project['title']}</span> "
-            f"<span class=\"author\">{project['description']}</span>"
+            f"<span class=\"author\">{project['description']}</span> "
+            f"<span class=\"year\">{project['date'].year}</span>"
             f"</div>"
             f"</li>\n"
         )
