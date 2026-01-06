@@ -273,6 +273,10 @@ def generate_bookshelf(website_base_dir):
         else:
             currently_reading.append(book)
 
+    for book in books:
+        print(book['date'], book['title']) 
+
+
     completed_books = sorted(
         completed_books,
         key=lambda x: x['date'],
