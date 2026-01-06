@@ -190,8 +190,10 @@ def generate_media(website_base_dir):
 
     completed_media_content_2024 = ""
     completed_media_content_2025 = ""
+    completed_media_content_2026 = ""
     completed_media_content_2024 += "\t\t\t<ul>\n"
     completed_media_content_2025 += "\t\t\t<ul>\n"
+    completed_media_content_2026 += "\t\t\t<ul>\n"
     for item in completed_media:
         year = item['date'].year
         media_html = (
@@ -206,11 +208,14 @@ def generate_media(website_base_dir):
         )
         if year == 2024:
             completed_media_content_2024 += media_html
-        else:
+        elif year == 2025:
             completed_media_content_2025 += media_html
+        else:
+            completed_media_content_2026 += media_html
 
     completed_media_content_2024 += "\t\t\t</ul>\n"
     completed_media_content_2025 += "\t\t\t</ul>\n"
+    completed_media_content_2026 += "\t\t\t</ul>\n"
 
     update_html(
         "site/html/media.html",
@@ -232,7 +237,14 @@ def generate_media(website_base_dir):
         "<!-- 2025_consumed_end -->",
         completed_media_content_2025,
     )
-    
+
+    update_html(
+        "site/html/media.html",
+        "<!-- 2026_consumed_start -->",
+        "<!-- 2026_consumed_end -->",
+        completed_media_content_2026,
+    )
+
     update_html(
         "site/html/media.html",
         "<!-- navigation_bar_start -->",
@@ -301,8 +313,10 @@ def generate_bookshelf(website_base_dir):
 
     completed_books_content_2024 = ""
     completed_books_content_2025 = ""
+    completed_books_content_2026 = ""
     completed_books_content_2024 += "\t\t\t<ul>\n"
     completed_books_content_2025 += "\t\t\t<ul>\n"
+    completed_books_content_2026 += "\t\t\t<ul>\n"
 
     for book in completed_books:
         year = book['date'].year
@@ -319,11 +333,14 @@ def generate_bookshelf(website_base_dir):
         )
         if year == 2024:
             completed_books_content_2024 += book_html
-        else:
+        elif year == 2025:
             completed_books_content_2025 += book_html
+        else:
+            completed_books_content_2026 += book_html
 
     completed_books_content_2024 += "\t\t\t</ul>\n"
     completed_books_content_2025 += "\t\t\t</ul>\n"
+    completed_books_content_2026 += "\t\t\t</ul>\n"
     
     update_html(
         "site/html/bookshelf.html",
@@ -344,6 +361,13 @@ def generate_bookshelf(website_base_dir):
         "<!-- 2025_books_start -->",
         "<!-- 2025_books_end -->",
         completed_books_content_2025,
+    )
+
+    update_html(
+        "site/html/bookshelf.html",
+        "<!-- 2026_books_start -->",
+        "<!-- 2026_books_end -->",
+        completed_books_content_2026,
     )
 
     update_html(
